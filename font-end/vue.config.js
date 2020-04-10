@@ -13,7 +13,9 @@ module.exports = {
         proxy: {
             //配置跨域
             '/baseUrl': {
-                target: 'http://localhost:8000/', //这里后台的地址模拟的;应该填写你们真实的后台接口
+                target: (process.env.NODE_ENV = 'development' ?
+                    'http://localhost:8000/' :
+                    ':8000/'), //这里后台的地址模拟的;应该填写你们真实的后台接口
                 ws: true,
                 changOrigin: true, //允许跨域
                 pathRewrite: {

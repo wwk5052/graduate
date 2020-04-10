@@ -4,8 +4,8 @@
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "start": "nohup vue-cli-service serve &"
+        "build": "vue-cli-service build --mode production",
+        "start": "vue-cli-service serve --mode production"
     },
     "dependencies": {
         "core-js": "^3.6.4",
