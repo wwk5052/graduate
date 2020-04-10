@@ -4,7 +4,6 @@ const { getPassword } = require('../utils/cryp');
 const login = (username, password) => {
     // 生成加密密码
     password = getPassword(password);
-
     username = escape(username);
     password = escape(password);
     const sql = `select * from users where username=${username} and password=${password};`;
@@ -17,7 +16,10 @@ const register = (username, password) => {
     password = getPassword(password);
     username = escape(username);
     password = escape(password);
-    // const sql = `insert into users (username,password) values (${username},${password});`
+    // const sql = `insert into users (username,password) values (${username},${password});`;
+    // return exec(sql).then((rows) => {
+    //     return rows[0] || {};
+    // });
     const sql = `select username from users where username=${username};`;
     return exec(sql).then((rows) => {
         if (rows[0]) {
