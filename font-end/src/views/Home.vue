@@ -67,9 +67,9 @@
 </template>
  
 <script>
-import { swiper, swiperSlide } from "vue-awesome-swiper";
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
-  name: "HelloWorld",
+  name: 'HelloWorld',
   components: {
     swiper,
     swiperSlide
@@ -81,7 +81,7 @@ export default {
       newsList: [],
       swiperOption: {
         notNextTick: true, //notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
-        direction: "vertical", //水平方向移动
+        direction: 'vertical', //水平方向移动
         grabCursor: true, //鼠标覆盖Swiper时指针会变成手掌形状，拖动时指针会变成抓手形状
         setWrapperSize: true, //Swiper使用flexbox布局(display: flex)，开启这个设定会在Wrapper上添加等于slides相加的宽或高，在对flexbox布局的支持不是很好的浏览器中可能需要用到。
         autoHeight: true, //自动高度。设置为true时，wrapper和container会随着当前slide的高度而发生变化
@@ -113,30 +113,38 @@ export default {
           // }
         }
       }
-    };
+    }
   },
   created() {},
   // 如果你需要得到当前的swiper对象来做一些事情，你可以像下面这样定义一个方法属性来获取当前的swiper对象，同时notNextTick必须为true
   computed: {
     swiper() {
-      return this.$refs.mySwiper.swiper;
+      return this.$refs.mySwiper.swiper
     }
   },
   mounted() {
+    // this.$http
+    //   .get('/api/pro/list')
+    //   .then(res => {
+    //     console.log('res', res)
+    //   })
+    //   .catch(err => {
+    //     console.log('err', err)
+    //   })
     this.$http
       .all([
-        this.$http.get("Cases/GetCasesAll"),
+        this.$http.get('Cases/GetCasesAll'),
         this.$http.get(`News?type=1&num=3`)
       ])
       .then(
         this.$http.spread((responseCases, responseNews) => {
-          this.caseList = responseCases.data;
-          this.newsList = responseNews.data;
-          this.loading = false;
+          this.caseList = responseCases.data
+          this.newsList = responseNews.data
+          this.loading = false
         })
-      );
+      )
   }
-};
+}
 </script>
  
 <style lang="scss" scoped>
