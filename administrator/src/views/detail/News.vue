@@ -88,19 +88,19 @@ export default {
       columns: [
         {
           title: '新闻ID',
-          key: 'id',
+          key: 'id'
         },
         {
           title: '新闻title',
-          key: 'title',
+          key: 'title'
         },
         {
           title: '新闻content',
-          key: 'content',
+          key: 'content'
         },
         {
           title: 'img',
-          key: 'imgurl',
+          key: 'imgurl'
         },
         {
           title: 'Action',
@@ -114,16 +114,16 @@ export default {
                 {
                   props: {
                     type: 'primary',
-                    size: 'small',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: '5px',
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
                       this.showUpdateNewDetailModal(params.row);
-                    },
-                  },
+                    }
+                  }
                 },
                 'Update'
               ),
@@ -132,21 +132,21 @@ export default {
                 {
                   props: {
                     type: 'error',
-                    size: 'small',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
                       this.delNew(params.row.id);
-                    },
-                  },
+                    }
+                  }
                 },
                 'Delete'
-              ),
+              )
             ]);
-          },
-        },
+          }
+        }
       ],
-      data: [],
+      data: []
     };
   },
   created() {
@@ -156,8 +156,8 @@ export default {
     // add modal
     addNewNewDetail() {
       this.$axios
-        .post('/baseUrl/api/new/create', this.newNewDetail)
-        .then((res) => {
+        .post('http://120.27.232.135:8000/api/new/create', this.newNewDetail)
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('添加成功');
@@ -165,40 +165,40 @@ export default {
             this.getNewList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('添加失败', err);
         });
     },
     delNew(newId) {
       this.$axios
-        .delete('/baseUrl/api/new/del', {
+        .delete('http://120.27.232.135:8000/api/new/del', {
           params: {
-            id: newId,
-          },
+            id: newId
+          }
         })
-        .then((res) => {
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('删除成功');
             this.getNewList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           this.$Message.info('删除失败');
           console.log('删除new失败', err);
         });
     },
     getNewList() {
       this.$axios
-        .get('/baseUrl/api/new/list')
-        .then((res) => {
+        .get('http://120.27.232.135:8000/api/new/list')
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.data = resData.data;
             this.tableLoading = false;
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('获取newList失败', err);
         });
     },
@@ -212,8 +212,8 @@ export default {
     },
     updateNewDetail() {
       this.$axios
-        .post('/baseUrl/api/new/update', this.newNewDetail)
-        .then((res) => {
+        .post('http://120.27.232.135:8000/api/new/update', this.newNewDetail)
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('更新成功');
@@ -221,10 +221,10 @@ export default {
             this.getNewList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('更新加失败', err);
         });
-    },
-  },
+    }
+  }
 };
 </script>

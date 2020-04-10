@@ -82,15 +82,15 @@ export default {
       columns: [
         {
           title: '案例ID',
-          key: 'id',
+          key: 'id'
         },
         {
           title: '案例title',
-          key: 'title',
+          key: 'title'
         },
         {
           title: '案例content',
-          key: 'content',
+          key: 'content'
         },
         {
           title: 'Action',
@@ -104,16 +104,16 @@ export default {
                 {
                   props: {
                     type: 'primary',
-                    size: 'small',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: '5px',
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
                       this.showUpdateCaseDetailModal(params.row);
-                    },
-                  },
+                    }
+                  }
                 },
                 'Update'
               ),
@@ -122,21 +122,21 @@ export default {
                 {
                   props: {
                     type: 'error',
-                    size: 'small',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
                       this.delCase(params.row.id);
-                    },
-                  },
+                    }
+                  }
                 },
                 'Delete'
-              ),
+              )
             ]);
-          },
-        },
+          }
+        }
       ],
-      data: [],
+      data: []
     };
   },
   created() {
@@ -146,8 +146,8 @@ export default {
     // add modal
     addNewCaseDetail() {
       this.$axios
-        .post('/baseUrl/api/case/add', this.newCaseDetail)
-        .then((res) => {
+        .post('http://120.27.232.135:8000/api/case/add', this.newCaseDetail)
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('添加成功');
@@ -155,40 +155,40 @@ export default {
             this.getCaseList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('添加失败', err);
         });
     },
     delCase(caseId) {
       this.$axios
-        .delete('/baseUrl/api/case/del', {
+        .delete('http://120.27.232.135:8000/api/case/del', {
           params: {
-            id: caseId,
-          },
+            id: caseId
+          }
         })
-        .then((res) => {
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('删除成功');
             this.getCaseList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           this.$Message.info('删除失败');
           console.log('删除case失败', err);
         });
     },
     getCaseList() {
       this.$axios
-        .get('/baseUrl/api/case/list')
-        .then((res) => {
+        .get('http://120.27.232.135:8000/api/case/list')
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.data = resData.data;
             this.tableLoading = false;
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('获取caseList失败', err);
         });
     },
@@ -202,8 +202,8 @@ export default {
     },
     updateCaseDetail() {
       this.$axios
-        .post('/baseUrl/api/case/update', this.newCaseDetail)
-        .then((res) => {
+        .post('http://120.27.232.135:8000/api/case/update', this.newCaseDetail)
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('更新成功');
@@ -211,10 +211,10 @@ export default {
             this.getCaseList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('更新加失败', err);
         });
-    },
-  },
+    }
+  }
 };
 </script>

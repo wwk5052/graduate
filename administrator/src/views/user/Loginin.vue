@@ -168,7 +168,8 @@ export default {
       // });
       console.log(this.formCustom);
       this.$axios
-        .post(`/baseUrl/api/user/login`, this.formCustom)
+        .post(`http://120.27.232.135:8000/api/user/login`, this.formCustom)
+        // .post(`/baseUrl/api/user/login`, this.formCustom)
         .then(res => {
           const resData = res.data;
           console.log(resData);
@@ -190,7 +191,11 @@ export default {
     handleReg() {
       console.log(this.formCustomRegister);
       this.$axios
-        .post(`/baseUrl/api/user/reg`, this.formCustomRegister)
+        .post(
+          `http://120.27.232.135:8000/api/user/reg`,
+          this.formCustomRegister
+        )
+        // .post(`/baseUrl/api/user/reg`, this.formCustomRegister)
         .then(res => {
           const resData = res.data;
           console.log(resData);

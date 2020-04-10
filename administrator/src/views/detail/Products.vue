@@ -82,15 +82,15 @@ export default {
       columns: [
         {
           title: '产品ID',
-          key: 'id',
+          key: 'id'
         },
         {
           title: '产品title',
-          key: 'title',
+          key: 'title'
         },
         {
           title: '产品content',
-          key: 'content',
+          key: 'content'
         },
         {
           title: 'Action',
@@ -104,16 +104,16 @@ export default {
                 {
                   props: {
                     type: 'primary',
-                    size: 'small',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: '5px',
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
                       this.showUpdateProductDetailModal(params.row);
-                    },
-                  },
+                    }
+                  }
                 },
                 'Update'
               ),
@@ -122,21 +122,21 @@ export default {
                 {
                   props: {
                     type: 'error',
-                    size: 'small',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
                       this.delProduct(params.row.id);
-                    },
-                  },
+                    }
+                  }
                 },
                 'Delete'
-              ),
+              )
             ]);
-          },
-        },
+          }
+        }
       ],
-      data: [],
+      data: []
     };
   },
   created() {
@@ -146,8 +146,8 @@ export default {
     // add modal
     addNewProductDetail() {
       this.$axios
-        .post('/baseUrl/api/pro/add', this.newProductDetail)
-        .then((res) => {
+        .post('http://120.27.232.135:8000/api/pro/add', this.newProductDetail)
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('添加成功');
@@ -155,40 +155,40 @@ export default {
             this.getProductList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('添加失败', err);
         });
     },
     delProduct(productId) {
       this.$axios
-        .delete('/baseUrl/api/pro/del', {
+        .delete('http://120.27.232.135:8000/api/pro/del', {
           params: {
-            id: productId,
-          },
+            id: productId
+          }
         })
-        .then((res) => {
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('删除成功');
             this.getProductList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           this.$Message.info('删除失败');
           console.log('删除product失败', err);
         });
     },
     getProductList() {
       this.$axios
-        .get('/baseUrl/api/pro/list')
-        .then((res) => {
+        .get('http://120.27.232.135:8000/api/pro/list')
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.data = resData.data;
             this.tableLoading = false;
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('获取productList失败', err);
         });
     },
@@ -202,8 +202,11 @@ export default {
     },
     updateProductDetail() {
       this.$axios
-        .post('/baseUrl/api/pro/update', this.newProductDetail)
-        .then((res) => {
+        .post(
+          'http://120.27.232.135:8000/api/pro/update',
+          this.newProductDetail
+        )
+        .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
             this.$Message.info('更新成功');
@@ -211,10 +214,10 @@ export default {
             this.getProductList();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('更新加失败', err);
         });
-    },
-  },
+    }
+  }
 };
 </script>
