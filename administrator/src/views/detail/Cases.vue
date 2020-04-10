@@ -146,7 +146,7 @@ export default {
     // add modal
     addNewCaseDetail() {
       this.$axios
-        .post('http://120.27.232.135:8000/api/case/add', this.newCaseDetail)
+        .post('/baseUrl/api/case/add', this.newCaseDetail)
         .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
@@ -161,7 +161,7 @@ export default {
     },
     delCase(caseId) {
       this.$axios
-        .delete('http://120.27.232.135:8000/api/case/del', {
+        .delete('/baseUrl/api/case/del', {
           params: {
             id: caseId
           }
@@ -180,7 +180,7 @@ export default {
     },
     getCaseList() {
       this.$axios
-        .get('http://120.27.232.135:8000/api/case/list')
+        .get('/baseUrl/api/case/list')
         .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
@@ -202,7 +202,7 @@ export default {
     },
     updateCaseDetail() {
       this.$axios
-        .post('http://120.27.232.135:8000/api/case/update', this.newCaseDetail)
+        .post('/baseUrl/api/case/update', this.newCaseDetail)
         .then(res => {
           const resData = res.data;
           if (resData.errno === 0) {
