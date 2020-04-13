@@ -6,7 +6,7 @@
         "dev": "npm run serve",
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "start": "nohup vue-cli-server serve &"
+        "start": "nohup vue-cli-service serve &"
     },
     "dependencies": {
         "axios": "^0.18.0",
