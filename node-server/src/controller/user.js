@@ -52,7 +52,7 @@ const getUserList = (username, password) => {
     password = escape(password);
     const sql = `select * from users;`;
     return exec(sql).then((rows) => {
-        return rows[0] || {};
+        return rows || {};
     });
 };
 

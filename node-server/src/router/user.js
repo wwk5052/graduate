@@ -72,7 +72,7 @@ const handleUserRouter = (req, res) => {
     }
 
     // 名单
-    if (method === 'GET' && req.path === '/api/user/list') {
+    if (req.method === 'GET' && req.path === '/api/user/list') {
         let author = req.query.author || '';
         let keyword = req.query.keyword || '';
         // const listData = getList(author, keyword)
