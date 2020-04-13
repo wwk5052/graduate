@@ -1,4 +1,10 @@
-const { login, register, del, update } = require('../controller/user');
+const {
+    login,
+    register,
+    del,
+    update,
+    getUserList,
+} = require('../controller/user');
 const { SuccessModel, ErrorModel } = require('../model/resModel');
 const { set } = require('../db/redis');
 
@@ -62,6 +68,25 @@ const handleUserRouter = (req, res) => {
             // }
             // return new ErrorModel('登录失败')
             // console.log('这是注册之后', data)
+        });
+    }
+
+    // 名单
+    if (method === 'GET' && req.path === '/api/user/list') {
+        let author = req.query.author || '';
+        let keyword = req.query.keyword || '';
+        // const listData = getList(author, keyword)
+        // return new SuccessModel(listData)
+        // if (req.query.isadmin) {
+        //     const loginCheckResult = loginCheck(req);
+        //     if (loginCheckResult) {
+        //         return loginCheckResult;
+        //     }
+        //     author = req.session.username;
+        // }
+        const result = getUserList(author, keyword);
+        return result.then((listData) => {
+            return new SuccessModel(listData);
         });
     }
 };

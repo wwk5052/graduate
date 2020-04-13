@@ -47,9 +47,19 @@ const update = (username, newname, newpassword) => {
     newname = escape(newname);
 };
 
+const getUserList = (username, password) => {
+    username = escape(username);
+    password = escape(password);
+    const sql = `select * from users;`;
+    return exec(sql).then((rows) => {
+        return rows[0] || {};
+    });
+};
+
 module.exports = {
     login,
     register,
     del,
     update,
+    getUserList,
 };
