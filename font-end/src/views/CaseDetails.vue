@@ -3,17 +3,18 @@
     <banner img="../assets/img/bgtop.jpg" />
     <div class="case-product">
       <div class="case-product-content">
-        <img v-lazy="imgserver+caseIdList.Img" alt />
-        <p class="product-title">{{caseIdList.Title}}</p>
-        <p class="product-time">{{caseIdList.CreateTime}}</p>
-        <p class="product-content">{{caseIdList.Content}}</p>
+        <!-- <img v-lazy="imgserver+caseIdList.Img" alt /> -->
+        <img :src="caseIdList.imgurl" alt />
+        <p class="product-title">{{caseIdList.title}}</p>
+        <p class="product-time">{{dateFormat(caseIdList.createtime)}}</p>
+        <p class="product-content">{{caseIdList.content}}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Banner from "../components/Banner";
+import Banner from '../components/Banner'
 export default {
   components: {
     Banner
@@ -22,30 +23,46 @@ export default {
     return {
       pid: 0,
       caseIdList: {}
-    };
+    }
   },
   created() {
-    this.pid = this.$route.params.id;
-    window.console.log(this.pid);
+    this.pid = this.$route.params.id
   },
   mounted() {
-    this.loadData();
+    this.loadData()
   },
   methods: {
     loadData() {
+      // this.$http
+      //   .get(`Cases/GetCasesById/${this.pid}`)
+      //   .then(response => {
+      //     //console.log(response);
+      //     this.caseIdList = response.data;
+      //     window.console.log(this.caseIdList);
+      //   })
+      //   .catch(function(error) {
+      //     window.console.log(error);
+      //   });
       this.$http
-        .get(`Cases/GetCasesById/${this.pid}`)
-        .then(response => {
-          //console.log(response);
-          this.caseIdList = response.data;
-          window.console.log(this.caseIdList);
+        .get(`/api/case/list`, {
+          params: {
+            id: this.pid
+          }
         })
-        .catch(function(error) {
-          window.console.log(error);
-        });
+        .then(res => {
+          this.caseIdList = res.data.data[0]
+        })
+        .catch(err => {
+          console.log('请求失败')
+        })
+    },
+    dateFormat(time) {
+      var moment = require('moment')
+      var date = time
+      return moment(date).format('YYYY-MM-DD')
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

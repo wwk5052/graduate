@@ -22,6 +22,7 @@ const handleCaseRouter = (req, res) => {
         const keyword = req.query.keyword || '';
         // const listData = getList(author, keyword)
         // return new SuccessModel(listData)
+        const id = req.query.id || '';
         if (req.query.isadmin) {
             const loginCheckResult = loginCheck(req);
             if (loginCheckResult) {
@@ -29,7 +30,7 @@ const handleCaseRouter = (req, res) => {
             }
             author = req.session.username;
         }
-        const result = getCaseList(author, keyword);
+        const result = getCaseList(author, keyword, id);
         return result.then((listData) => {
             return new SuccessModel(listData);
         });

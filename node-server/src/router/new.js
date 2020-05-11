@@ -20,6 +20,8 @@ const handleNewRouter = (req, res) => {
     if (req.method === 'GET' && req.path === '/api/new/list') {
         let author = req.query.author || '';
         const keyword = req.query.keyword || '';
+        const type = req.query.type || 1;
+        const id = req.query.id || '';
         // const listData = getList(author, keyword)
         // return new SuccessModel(listData)
         if (req.query.isadmin) {
@@ -29,7 +31,7 @@ const handleNewRouter = (req, res) => {
             }
             author = req.session.username;
         }
-        const result = getNewsList(author, keyword);
+        const result = getNewsList(author, keyword, type, id);
         return result.then((listData) => {
             return new SuccessModel(listData);
         });

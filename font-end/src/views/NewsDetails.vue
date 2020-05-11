@@ -3,19 +3,20 @@
     <banner img="../assets/img/bgtop.jpg" />
     <div class="NewsDetails-product">
       <div class="NewsDetails-product-content">
-        <img v-lazy="imgserver+newsIdList.Img" alt />
-        <p class="product-title">{{newsIdList.Title}}</p>
-        <p class="product-time">{{newsIdList.CreateTime}}</p>
-        <p class="product-content">{{newsIdList.Content}}</p>
+        <!-- <img v-lazy="imgserver+newsIdList.Img" alt /> -->
+        <img :src="newsIdList.imgurl" alt />
+        <p class="product-title">{{newsIdList.title}}</p>
+        <p class="product-time">{{dateFormat(newsIdList.createTime)}}</p>
+        <p class="product-content">{{newsIdList.content}}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Banner from "../components/Banner";
+import Banner from '../components/Banner'
 export default {
-  name: "NewsDetails",
+  name: 'NewsDetails',
   components: {
     Banner
   },
@@ -23,30 +24,49 @@ export default {
     return {
       pid: 0,
       newsIdList: {}
-    };
+    }
   },
   created() {
-    this.pid = this.$route.params.id;
-    window.console.log(this.pid);
+    this.pid = this.$route.params.id || ''
+    this.type = this.$route.params.type || 0
+    window.console.log(this.pid)
   },
   mounted() {
-    this.loadData();
+    this.loadData()
   },
   methods: {
     loadData() {
+      // this.$http
+      //   .get(`News/GetNewsById/${this.pid}`)
+      //   .then(response => {
+      //     //console.log(response);
+      //     this.newsIdList = response.data;
+      //     window.console.log(this.newsIdList);
+      //   })
+      //   .catch(function(error) {
+      //     window.console.log(error);
+      //   });
       this.$http
-        .get(`News/GetNewsById/${this.pid}`)
+        .get(`/api/new/list`, {
+          params: {
+            id: this.pid,
+            type: this.type
+          }
+        })
         .then(response => {
-          //console.log(response);
-          this.newsIdList = response.data;
-          window.console.log(this.newsIdList);
+          this.newsIdList = response.data.data[0]
         })
         .catch(function(error) {
-          window.console.log(error);
-        });
+          window.console.log(error)
+        })
+    },
+    dateFormat(time) {
+      var moment = require('moment')
+      var date = time
+      return moment(date).format('YYYY-MM-DD')
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

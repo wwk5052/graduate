@@ -33,18 +33,24 @@ const register = (username, password) => {
     });
 };
 
-const del = (username) => {
-    username = escape(username);
-    const sql = `delete from users where username=${username};`;
+const del = (id) => {
+    username = escape(id);
+    const sql = `delete from users where id=${id};`;
+    // const sql = `delete from users where username=${username};`;
     return exec(sql).then((rows) => {
         return rows[0] || {};
     });
 };
 
-const update = (username, newname, newpassword) => {
-    password = getPassword(newpassword);
+const update = (username, id) => {
     username = escape(username);
-    newname = escape(newname);
+    const sql = `update users set username = ${username} where id=${id};`
+    return exec(sql).then((updateData) => {
+        if (updateData.affectedRows > 0) {
+            return true;
+        }
+        return false;
+    });
 };
 
 const getUserList = (username, password) => {

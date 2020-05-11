@@ -6,15 +6,15 @@
         <div class="content-nav">
           <div
             class="content-nav-btn"
-            :class="{'content-nav-active':newstype == 1}"
-            @click="newstype = 1"
+            :class="{'content-nav-active':newstype == 0}"
+            @click="newstype = 0"
           >
             <span>公司新闻</span>
           </div>
           <div
             class="content-nav-btn"
-            :class="{'content-nav-active':newstype == 2}"
-            @click="newstype = 2 "
+            :class="{'content-nav-active':newstype == 1}"
+            @click="newstype = 1 "
           >
             <span>行业动态</span>
           </div>
@@ -22,14 +22,14 @@
 
         <div class="content-nav-item">
           <div class="item-list" v-for="(item,index) in newsList" :key="index">
-            <div class="item-img" v-lazy:background-image="imgserver + item.Img"></div>
-
-            <p class="item-list-title">{{item.Title}}</p>
-            <p class="item-list-content">{{item.Content}}</p>
+            <!-- <div class="item-img" v-lazy:background-image="imgserver + item.Img"></div> -->
+            <img :src="item.imgurl" alt class="item-img" />
+            <p class="item-list-title">{{item.title}}</p>
+            <p class="item-list-content">{{item.content}}</p>
             <div class="item-list-more">
               <router-link
                 class="text-decoration"
-                :to="{ name: 'newsdetails', params: { id: item.Id }}"
+                :to="{ name: 'newsdetails', params: { id: item.id,type:item.type }}"
               >
                 <img src="../assets/img/sanjiao.png" />
                 <span>more</span>
@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import Banner from "../components/Banner";
+import Banner from '../components/Banner'
 export default {
-  name: "news",
+  name: 'news',
   components: {
     Banner
   },
@@ -53,35 +53,41 @@ export default {
     return {
       loading: true,
       newsList: [],
-      newstype: 1
-    };
+      newstype: 0
+    }
   },
   methods: {
-    loadData() {
-      this.loading = true;
+    loadData(type = 0) {
+      this.loading = true
       this.$http
-        .get(`News?type=${this.newstype}&num=6`)
-        .then(response => {
-          //console.log(response);
-          this.newsList = response.data;
-          this.loading = false;
-          //window.console.log(this.newsList);
+        .get(`/api/new/list?type=${type}`)
+        .then(res => {
+          this.newsList = res.data.data
+          this.loading = false
         })
-        .catch(function(error) {
-          window.console.log(error);
-        });
+        .catch(err => {
+          console.log('err', err)
+        })
+      // this.$http
+      //   .get(`News?type=${this.newstype}&num=6`)
+      //   .then(response => {
+      //     // this.newsList = response.data
+      //     this.loading = false
+      //   })
+      //   .catch(function(error) {
+      //     window.console.log(error)
+      //   })
     }
   },
   mounted() {
-    this.loadData();
+    this.loadData()
   },
   watch: {
     newstype(type) {
-      window.console.log(type);
-      this.loadData();
+      this.loadData(type)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

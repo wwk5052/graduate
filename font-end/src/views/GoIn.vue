@@ -119,8 +119,8 @@
 </template>
 
 <script>
-import Banner from "../components/Banner";
-import { swiper, swiperSlide } from "vue-awesome-swiper";
+import Banner from '../components/Banner'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
   components: {
     Banner,
@@ -136,48 +136,50 @@ export default {
       teamItem: [],
       swiperOption: {
         navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev"
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
         }
       },
       dialogTableVisible: false,
-      dialogUrl: "",
-      dialogTitle: ""
-    };
+      dialogUrl: '',
+      dialogTitle: ''
+    }
   },
   mounted() {
     this.$http
       .all([
-        this.$http.get("Honor/GetHonorAll"),
-        this.$http.get("Enterprise/GetEnterpriseAll"),
-        this.$http.get(`Team/GetTeamAll`),
-        this.$http.get(`Course/GetCourseAll`)
+        this.$http.get('http://shkjgw.shkjem.com/api/Honor/GetHonorAll'),
+        this.$http.get(
+          'http://shkjgw.shkjem.com/api/Enterprise/GetEnterpriseAll'
+        ),
+        this.$http.get(`http://shkjgw.shkjem.com/api/Team/GetTeamAll`),
+        this.$http.get(`http://shkjgw.shkjem.com/api/Course/GetCourseAll`)
       ])
       .then(
         this.$http.spread(
           (responseHonor, responseEnterprise, responseTeam, responseCourse) => {
-            this.honorList = responseHonor.data;
-            this.partnerImg = responseEnterprise.data;
-            this.teamItem = responseTeam.data;
+            this.honorList = responseHonor.data
+            this.partnerImg = responseEnterprise.data
+            this.teamItem = responseTeam.data
 
-            var groupCount = Math.ceil(responseCourse.data.length / 2);
-            window.console.log(groupCount);
+            var groupCount = Math.ceil(responseCourse.data.length / 2)
+            window.console.log(groupCount)
             for (let i = 0; i < groupCount; i++) {
-              let img2 = [];
+              let img2 = []
               for (let j = 0; j < 2; j++) {
                 if (responseCourse.data.length - 1 >= i * 2 + j) {
-                  img2.push(responseCourse.data[i * 2 + j]);
+                  img2.push(responseCourse.data[i * 2 + j])
                 }
               }
-              this.courseList.push(img2);
+              this.courseList.push(img2)
             }
-            window.console.log(this.courseList);
-            this.loading = false;
+            window.console.log(this.courseList)
+            this.loading = false
           }
         )
-      );
+      )
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

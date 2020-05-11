@@ -2,7 +2,7 @@ const xss = require('xss');
 
 const { exec } = require('../db/mysql');
 
-const getCaseList = (author, keyword) => {
+const getCaseList = (author, keyword, id) => {
     // let sql = `select * from blogs where 1=1 `
     // 1=1 起到一个占位的作用，增加容错，防止author和keyword没有值
     let sql = `select * from cases where 1=1 `;
@@ -12,9 +12,13 @@ const getCaseList = (author, keyword) => {
     if (keyword) {
         sql += `and title like '${keyword}' `;
     }
+    if (id) {
+        sql += `and id =${id} `;
+    }
     // 根据createtime进行倒序排列
     sql += `order by createtime desc;`;
     // 返回promise
+    console.log('这是sql', sql)
     return exec(sql);
 };
 

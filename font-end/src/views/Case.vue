@@ -4,14 +4,15 @@
     <div class="case-section" v-loading="loading">
       <div class="case-section-content">
         <div class="case-section-content-list" v-for="(cas,index) in caseList" :key="index">
-          <img v-lazy="imgserver+cas.Img" />
+          <!-- <img v-lazy="imgserver+cas.Img" /> -->
+          <img :src="cas.imgurl" alt />
           <div class="content-list-abstract" :class="{'abstract-active' : index%2!=1}">
-            <p class="abstract-title">{{cas.Title}}</p>
-            <p class="abstract-content">{{cas.Content}}</p>
+            <p class="abstract-title">{{cas.title}}</p>
+            <p class="abstract-content">{{cas.content}}</p>
             <div class="more">
               <router-link
                 class="text-decoration"
-                :to="{ name: 'casedetails', params: { id: cas.Id }}"
+                :to="{ name: 'casedetails', params: { id: cas.id }}"
               >
                 <span>more</span>
                 <img src="../assets/img/sanjiao.png" />
@@ -24,7 +25,7 @@
   </div>
 </template>
 <script>
-import Banner from "../components/Banner";
+import Banner from '../components/Banner'
 export default {
   components: {
     Banner
@@ -33,23 +34,30 @@ export default {
     return {
       loading: true,
       caseList: []
-    };
+    }
   },
   mounted() {
-    window.console.log("case");
+    // this.$http
+    //   .get('Cases/GetCasesAll')
+    //   .then(response => {
+    //     this.caseList = response.data
+    //     //window.console.log(this.caseList);
+    //     this.loading = false
+    //   })
+    //   .catch(function(error) {
+    //     window.console.log(error)
+    //   })
     this.$http
-      .get("Cases/GetCasesAll")
-      .then(response => {
-        //console.log(response);
-        this.caseList = response.data;
-        //window.console.log(this.caseList);
-        this.loading = false;
+      .get('/api/case/list')
+      .then(res => {
+        this.caseList = res.data.data
+        this.loading = false
       })
-      .catch(function(error) {
-        window.console.log(error);
-      });
+      .catch(err => {
+        console.log('请求经典案例列表失败', err)
+      })
   }
-};
+}
 </script>
 
  <style lang="scss" scoped>

@@ -25,8 +25,8 @@
           <template slot-scope="scope">
             <el-image
               class="table-td-thumb"
-              :src="scope.row.thumb"
-              :preview-src-list="[scope.row.thumb]"
+              :src="scope.row.imgurl"
+              :preview-src-list="[scope.row.imgurl]"
             ></el-image>
           </template>
         </el-table-column>
@@ -252,8 +252,8 @@ export default {
 .table-td-thumb {
   display: block;
   margin: auto;
-  width: 40px;
-  height: 40px;
+  width: 200px;
+  height: 100px;
 }
 .addButton {
   text-align: right;

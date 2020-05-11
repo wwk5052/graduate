@@ -44,8 +44,8 @@ const handleUserRouter = (req, res) => {
 
     // 删除
     if (method === 'DELETE' && req.path === '/api/user/del') {
-        const { username } = req.query;
-        const result = del(username);
+        const { id } = req.query;
+        const result = del(id);
         return result.then((data) => {
             if (data.username) {
                 return new ErrorModel('删除失败');
@@ -56,18 +56,22 @@ const handleUserRouter = (req, res) => {
 
     // 更新
     if (method === 'POST' && req.path === '/api/user/update') {
-        const { username, newname, newpassword } = req.body;
-        const result = update(username, newname, newpassword);
-        return result.then((data) => {
-            // if (data.username) {
-            //     // 设置 session
-            //     req.session.username = data.username
-            //         // 同步到 redis
-            //     set(req.sessionId, req.session)
-            // return new SuccessModel('注册成功')
-            // }
-            // return new ErrorModel('登录失败')
-            // console.log('这是注册之后', data)
+        // const { username, newname, newpassword } = req.body;
+        // const result = update(username, newname, newpassword);
+        // return result.then((data) => {
+        // if (data.username) {
+        //     // 设置 session
+        //     req.session.username = data.username
+        //         // 同步到 redis
+        //     set(req.sessionId, req.session)
+        // return new SuccessModel('注册成功')
+        // }
+        // return new ErrorModel('登录失败')
+        // console.log('这是注册之后', data)
+        // });
+        const result = update(req.body.username, req.body.id);
+        return result.then((val) => {
+            return val ? new SuccessModel('修改成功！') : new ErrorModel('修改失败！');
         });
     }
 
