@@ -18,7 +18,6 @@ const getCaseList = (author, keyword, id) => {
     // 根据createtime进行倒序排列
     sql += `order by createtime desc;`;
     // 返回promise
-    console.log('这是sql', sql)
     return exec(sql);
 };
 

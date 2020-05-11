@@ -211,15 +211,14 @@ export default {
     // 保存编辑
     saveEdit() {
       this.editVisible = false
-      console.log('这是修改之后的内容', this.form)
       this.$axios
         .post('/api/user/update', this.form)
         .then(res => {
-          console.log('这是修改之后的res', res)
           this.getUserList()
+          this.$message.success('修改成功！')
         })
         .catch(err => {
-          console.log('修改失败')
+          console.log('修改失败！')
         })
     },
     // 确定添加

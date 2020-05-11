@@ -5,7 +5,10 @@ const { exec } = require('../db/mysql');
 const getNewsList = (author, keyword, type, id) => {
     // let sql = `select * from blogs where 1=1 `
     // 1=1 起到一个占位的作用，增加容错，防止author和keyword没有值
-    let sql = `select * from news where type=${type} `;
+    let sql = `select * from news `;
+    if (type) {
+        sql += `where type=${type} `;
+    }
     if (author) {
         sql += `and author='${author}' `;
     }
