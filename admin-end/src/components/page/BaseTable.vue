@@ -12,7 +12,7 @@
         <el-button type="primary" @click="addCase">添加管理员</el-button>
       </div>
       <el-table
-        :data="tableData"
+        :data="tablePageData"
         border
         class="table"
         ref="multipleTable"
@@ -79,11 +79,11 @@
         <el-pagination
           background
           layout="total, prev, pager, next"
-          :current-page="query.pageIndex"
-          :page-size="query.pageSize"
-          :total="pageTotal"
-          @current-change="handlePageChange"
-        ></el-pagination>
+          :page-size="size"
+          :total="total"
+          :current-page="current"
+          @current-change="onPageIndexChange"
+        />
       </div>
     </div>
 
@@ -130,6 +130,9 @@ export default {
   name: 'basetable',
   data() {
     return {
+      size: 5,
+      current: 1,
+      pageTotal: 0,
       query: {
         address: '',
         name: '',
@@ -150,6 +153,16 @@ export default {
   },
   created() {
     this.getUserList()
+  },
+  computed: {
+    total() {
+      return this.tableData.length
+    },
+    tablePageData() {
+      let start = (this.current - 1) * this.size
+      let end = start + this.size
+      return this.tableData.slice(start, end)
+    }
   },
   methods: {
     getUserList() {
@@ -247,6 +260,9 @@ export default {
     },
     addCase() {
       this.editVisibleAdd = true
+    },
+    onPageIndexChange(index) {
+      this.current = index
     }
   }
 }

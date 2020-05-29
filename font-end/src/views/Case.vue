@@ -1,6 +1,6 @@
 <template>
   <div class="case">
-    <banner img="../assets/img/bgtop.jpg" title="精典案例" />
+    <banner img="../assets/img/bgtop.jpg" title="经典案例" />
     <div class="case-section" v-loading="loading">
       <div class="case-section-content">
         <div class="case-section-content-list" v-for="(cas,index) in caseList" :key="index">

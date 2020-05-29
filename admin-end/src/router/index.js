@@ -29,7 +29,7 @@ export default new Router({
                             /* webpackChunkName: "table" */
                             '../components/page/BaseTable.vue'
                         ),
-                    meta: { title: '基础表格' }
+                    meta: { title: '用户列表', permission: true }
                 },
                 {
                     path: '/tabs',
@@ -38,7 +38,7 @@ export default new Router({
                             /* webpackChunkName: "tabs" */
                             '../components/page/Tabs.vue'
                         ),
-                    meta: { title: 'tab选项卡' }
+                    meta: { title: '系统通知' }
                 },
                 // 产品列表
                 {
@@ -89,6 +89,12 @@ export default new Router({
                             '../components/page/Permission.vue'
                         ),
                     meta: { title: '权限测试', permission: true }
+                },
+                {
+                    path: '/message',
+                    component: () =>
+                        import ('../components/page/Message.vue'),
+                    meta: { title: '通知管理', permission: true }
                 },
                 {
                     path: '/404',

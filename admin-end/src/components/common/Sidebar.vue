@@ -18,25 +18,15 @@
               <span slot="title">{{ item.title }}</span>
             </template>
             <template v-for="subItem in item.subs">
-              <el-submenu
-                v-if="subItem.subs"
-                :index="subItem.index"
-                :key="subItem.index"
-              >
+              <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
                 <template slot="title">{{ subItem.title }}</template>
                 <el-menu-item
                   v-for="(threeItem, i) in subItem.subs"
                   :key="i"
                   :index="threeItem.index"
-                  >{{ threeItem.title }}</el-menu-item
-                >
+                >{{ threeItem.title }}</el-menu-item>
               </el-submenu>
-              <el-menu-item
-                v-else
-                :index="subItem.index"
-                :key="subItem.index"
-                >{{ subItem.title }}</el-menu-item
-              >
+              <el-menu-item v-else :index="subItem.index" :key="subItem.index">{{ subItem.title }}</el-menu-item>
             </template>
           </el-submenu>
         </template>
@@ -52,7 +42,7 @@
 </template>
 
 <script>
-import bus from '../common/bus';
+import bus from '../common/bus'
 export default {
   data() {
     return {
@@ -63,15 +53,15 @@ export default {
           index: 'dashboard',
           title: '系统首页'
         },
-        {
-          icon: 'el-icon-lx-cascades',
-          index: 'table',
-          title: '用户列表'
-        },
+        // {
+        //   icon: 'el-icon-lx-cascades',
+        //   index: 'table',
+        //   title: '用户列表'
+        // },
         {
           icon: 'el-icon-lx-copy',
           index: 'tabs',
-          title: 'tab选项卡'
+          title: '系统通知'
         },
         {
           icon: 'el-icon-lx-calendar',
@@ -95,34 +85,42 @@ export default {
         {
           icon: 'el-icon-lx-warn',
           index: '7',
-          title: '错误处理',
+          title: '管理中心',
           subs: [
             {
-              index: 'permission',
-              title: '权限测试'
+              index: 'message',
+              title: '通知管理'
             },
             {
-              index: '404',
-              title: '404页面'
+              index: 'table',
+              title: '用户管理'
             }
+            // {
+            //   index: 'permission',
+            //   title: '权限测试'
+            // },
+            // {
+            //   index: '404',
+            //   title: '404页面'
+            // }
           ]
         }
       ]
-    };
+    }
   },
   computed: {
     onRoutes() {
-      return this.$route.path.replace('/', '');
+      return this.$route.path.replace('/', '')
     }
   },
   created() {
     // 通过 Event Bus 进行组件间通信，来折叠侧边栏
     bus.$on('collapse', msg => {
-      this.collapse = msg;
-      bus.$emit('collapse-content', msg);
-    });
+      this.collapse = msg
+      bus.$emit('collapse-content', msg)
+    })
   }
-};
+}
 </script>
 
 <style scoped>

@@ -16,7 +16,7 @@
         </div>
         <!-- 消息中心 -->
         <div class="btn-bell">
-          <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
+          <el-tooltip effect="dark" :content="message?`有${message}条未读通知`:`通知中心`" placement="bottom">
             <router-link to="/tabs">
               <i class="el-icon-bell"></i>
             </router-link>
@@ -54,6 +54,23 @@ export default {
       name: 'linxin',
       message: 2
     }
+  },
+  created() {
+    this.$axios
+      .get('/api/message/list', {
+        params: {
+          status: 0
+        }
+      })
+      .then(res => {
+        const resData = res.data
+        if (resData.errno === 0) {
+          this.message = resData.data.length
+        }
+      })
+      .catch(err => {
+        this.$message.error('获取未读信息出错!')
+      })
   },
   computed: {
     username() {

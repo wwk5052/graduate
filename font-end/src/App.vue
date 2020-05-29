@@ -2,9 +2,9 @@
   <div id="app">
     <el-container>
       <el-header>
-        <div class="logo">
-          <img src="./assets/img/toplogo.png" alt />
-        </div>
+        <!-- <div class="logo"> -->
+        <!-- <img src="./assets/img/toplogo.png" alt /> -->
+        <!-- </div> -->
         <el-menu
           :default-active="defaultActive"
           class="el-menu-demo"
@@ -16,8 +16,10 @@
           <el-menu-item index="/news">新闻资讯</el-menu-item>
           <el-menu-item index="/product">产品中心</el-menu-item>
           <el-menu-item index="/case">经典案例</el-menu-item>
-          <el-menu-item index="/goin">走进科建</el-menu-item>
-          <!-- <el-menu-item index="/download">下载APP</el-menu-item> -->
+          <el-menu-item index="/goin">走进企业</el-menu-item>
+          <el-menu-item>
+            <a style="{text-decoration: none}" href="http://localhost:8080">后台管理</a>
+          </el-menu-item>
         </el-menu>
       </el-header>
       <el-main>
@@ -27,7 +29,7 @@
         <div class="footer-content">
           <ul class="content-nav">
             <li>
-              <p>走进科建</p>
+              <p>走进企业</p>
               <span>发展历程</span>
               <span>企业文化</span>
               <span>资质荣誉</span>
@@ -45,17 +47,8 @@
               <span>平台目标</span>
               <span>功能模块</span>
             </li>
-            <li>
-              <p>联系我们</p>
-              <span>邮箱：kejianlml@163.com</span>
-              <span>电话：021-55802368</span>
-              <span>地址：上海市杨浦区翔殷路128号12号楼101</span>
-            </li>
           </ul>
           <img src="./assets/img/ercode.png" alt />
-        </div>
-        <div class="copyright">
-          <span>科建版权所有</span>
         </div>
       </div>
     </el-container>
@@ -163,6 +156,10 @@ body {
       color: #fff;
       line-height: 30px;
     }
+  }
+
+  .noneDecoration {
+    text-decoration: none;
   }
 }
 </style>

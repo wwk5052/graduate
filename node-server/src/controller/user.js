@@ -8,6 +8,7 @@ const login = (username, password) => {
     password = escape(password);
     const sql = `select * from users where username=${username} and password=${password};`;
     return exec(sql).then((rows) => {
+        console.log('这是登录结果', rows)
         return rows[0] || {};
     });
 };

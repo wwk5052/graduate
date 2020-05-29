@@ -1,6 +1,6 @@
 <template>
   <div class="go-in">
-    <banner img="../assets/img/bgtop.jpg" title="走进科建" />
+    <banner img="../assets/img/bgtop.jpg" title="走进企业" />
     <div class="section" v-loading="loading">
       <div class="section-content">
         <div class="content-summary">

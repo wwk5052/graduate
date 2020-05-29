@@ -5,8 +5,9 @@ const handleUserRouter = require('./src/router/user');
 const handleCaseRouter = require('./src/router/case');
 const handleNewRouter = require('./src/router/new');
 const handleProRouter = require('./src/router/pro');
-
-// 获取 cookie 的过期时间
+const handleMessageRouter = require('./src/router/message');
+const handleTodoRouter = require('./src/router/todo')
+    // 获取 cookie 的过期时间
 const getCookieExpires = () => {
     const d = new Date();
     d.setTime(d.getTime() + 24 * 60 * 60 * 1000);
@@ -163,6 +164,34 @@ const serverHandle = (req, res) => {
                         );
                     }
                     res.end(JSON.stringify(proData));
+                });
+                return;
+            }
+            // message处理路由
+            const messageResult = handleMessageRouter(req, res);
+            if (messageResult) {
+                messageResult.then(messageData => {
+                    if (needSetCookie) {
+                        res.setHeader(
+                            'Set-Cookie',
+                            `userid=${userId}; path=/; httpOnly; expires=${getCookieExpires()}`
+                        );
+                    }
+                    res.end(JSON.stringify(messageData))
+                });
+                return;
+            }
+            // 处理todo list 路由
+            const todoListResult = handleTodoRouter(req, res);
+            if (todoListResult) {
+                todoListResult.then(todoData => {
+                    if (needSetCookie) {
+                        res.setHedader(
+                            `Set-Cookie`,
+                            `userid=${userId}; path=/; httpOnly; expires=${getCookieExpires()}`
+                        );
+                    }
+                    res.end(JSON.stringify(todoData))
                 });
                 return;
             }

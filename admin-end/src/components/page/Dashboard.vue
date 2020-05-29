@@ -26,12 +26,12 @@
         <el-card shadow="hover" style="height:400px;margin:20px;">
           <div slot="header" class="clearfix">
             <span>待办事项</span>
-            <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="handleAddTodo">添加</el-button>
           </div>
           <el-table :show-header="false" :data="todoList" style="width:100%;">
             <el-table-column width="40">
               <template slot-scope="scope">
-                <el-checkbox v-model="scope.row.status"></el-checkbox>
+                <el-checkbox v-model="scope.row.status" @change="todoStatusChange(scope.row)"></el-checkbox>
               </template>
             </el-table-column>
             <el-table-column>
@@ -42,170 +42,152 @@
                 >{{scope.row.title}}</div>
               </template>
             </el-table-column>
-            <el-table-column width="60">
-              <template>
-                <i class="el-icon-edit"></i>
-                <i class="el-icon-delete"></i>
+            <el-table-column width="100">
+              <template slot-scope="scope">
+                <i class="el-icon-edit editIcon" @click="handleEditTodo(scope.row)"></i>
+                <i class="el-icon-delete editIcon" @click="handleDeleteTodo(scope.row.id)"></i>
               </template>
             </el-table-column>
           </el-table>
         </el-card>
       </el-col>
     </el-row>
+    <!-- 待办事项编辑框 -->
+    <el-dialog title="待办详情" :visible.sync="editVisible" width="50%">
+      <el-form ref="form" :model="form" label-width="70px">
+        <el-form-item label="待办内容">
+          <el-input type="textarea" :rows="10" v-model="form.title"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editVisible=false">取 消</el-button>
+        <el-button type="primary" @click="saveEdit">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 待办事项添加弹框 -->
+    <el-dialog title="待办详情" :visible.sync="visible" width="50%">
+      <el-form ref="form" :model="addForm" label-width="70px">
+        <el-form-item label="待办内容">
+          <el-input type="textarea" :rows="10" v-model="addForm.title"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="visible = false">取 消</el-button>
+        <el-button type="primary" @click="saveAdd">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import Schart from 'vue-schart'
 import bus from '../common/bus'
 export default {
   name: 'dashboard',
   data() {
     return {
+      visible: false,
+      editVisible: false,
+      form: {},
+      addForm: {},
       name: localStorage.getItem('ms_username'),
-      todoList: [
-        {
-          title: '今天要修复100个bug',
-          status: false
-        },
-        {
-          title: '今天要修复100个bug',
-          status: false
-        },
-        {
-          title: '今天要写100行代码加几个bug吧',
-          status: false
-        },
-        {
-          title: '今天要修复100个bug',
-          status: false
-        },
-        {
-          title: '今天要修复100个bug',
-          status: true
-        },
-        {
-          title: '今天要写100行代码加几个bug吧',
-          status: true
-        }
-      ],
-      data: [
-        {
-          name: '2018/09/04',
-          value: 1083
-        },
-        {
-          name: '2018/09/05',
-          value: 941
-        },
-        {
-          name: '2018/09/06',
-          value: 1139
-        },
-        {
-          name: '2018/09/07',
-          value: 816
-        },
-        {
-          name: '2018/09/08',
-          value: 327
-        },
-        {
-          name: '2018/09/09',
-          value: 228
-        },
-        {
-          name: '2018/09/10',
-          value: 1065
-        }
-      ],
-      options: {
-        type: 'bar',
-        title: {
-          text: '最近一周各品类销售图'
-        },
-        xRorate: 25,
-        labels: ['周一', '周二', '周三', '周四', '周五'],
-        datasets: [
-          {
-            label: '家电',
-            data: [234, 278, 270, 190, 230]
-          },
-          {
-            label: '百货',
-            data: [164, 178, 190, 135, 160]
-          },
-          {
-            label: '食品',
-            data: [144, 198, 150, 235, 120]
-          }
-        ]
-      },
-      options2: {
-        type: 'line',
-        title: {
-          text: '最近几个月各品类销售趋势图'
-        },
-        labels: ['6月', '7月', '8月', '9月', '10月'],
-        datasets: [
-          {
-            label: '家电',
-            data: [234, 278, 270, 190, 230]
-          },
-          {
-            label: '百货',
-            data: [164, 178, 150, 135, 160]
-          },
-          {
-            label: '食品',
-            data: [74, 118, 200, 235, 90]
-          }
-        ]
-      }
+      todoList: []
     }
   },
-  components: {
-    Schart
+  created() {
+    this.getTodoList()
   },
   computed: {
     role() {
       return this.name === 'root' ? '超级管理员' : '普通用户'
     }
   },
-  // created() {
-  //     this.handleListener();
-  //     this.changeDate();
-  // },
-  // activated() {
-  //     this.handleListener();
-  // },
-  // deactivated() {
-  //     window.removeEventListener('resize', this.renderChart);
-  //     bus.$off('collapse', this.handleBus);
-  // },
+
   methods: {
-    changeDate() {
-      const now = new Date().getTime()
-      this.data.forEach((item, index) => {
-        const date = new Date(now - (6 - index) * 86400000)
-        item.name = `${date.getFullYear()}/${date.getMonth() +
-          1}/${date.getDate()}`
-      })
+    getTodoList() {
+      this.$axios
+        .get('/api/todo/list')
+        .then(res => {
+          const resData = res.data
+          if (resData.errno === 0) {
+            this.todoList = resData.data
+          } else {
+            this.$message.error('请求todo列表失败！')
+          }
+        })
+        .catch(err => {
+          this.$message.error('获取todo列表失败！')
+        })
+    },
+    handleEditTodo(detail) {
+      this.form = detail
+      this.editVisible = true
+    },
+    saveEdit() {
+      this.$axios
+        .post('/api/todo/update', this.form)
+        .then(res => {
+          const resData = res.data
+          if (resData.errno === 0) {
+            this.$message.success('修改成功！')
+            this.editVisible = false
+            this.form = {}
+          }
+        })
+        .catch(err => {
+          this.$message.error('修改失败！')
+        })
+    },
+    todoStatusChange(detail) {
+      console.log('这是detail', detail)
+      this.$axios
+        .post('/api/todo/update', detail)
+        .then(res => {
+          const resData = res.data
+        })
+        .catch(err => {})
+    },
+    saveAdd() {
+      this.addForm.status = false
+      this.$axios
+        .post('/api/todo/add', this.addForm)
+        .then(res => {
+          const resData = res.data
+          if (resData.errno === 0) {
+            this.$message.success('添加成功!')
+            this.getTodoList()
+            this.visible = false
+            this.addForm = {}
+          }
+        })
+        .catch(err => {
+          this.$message.error('添加失败')
+          this.visible = false
+        })
+    },
+    handleDeleteTodo(id) {
+      this.$axios
+        .delete('/api/todo/del', {
+          params: {
+            id
+          }
+        })
+        .then(res => {
+          const resData = res.data
+          if (resData.errno === 0) {
+            this.$message.success('删除成功！')
+            this.getTodoList()
+          } else {
+            this.$message.error('删除失败！')
+          }
+        })
+        .catch(err => {
+          this.$message.error('删除失败！')
+        })
+    },
+    handleAddTodo() {
+      this.visible = true
     }
-    // handleListener() {
-    //     bus.$on('collapse', this.handleBus);
-    //     // 调用renderChart方法对图表进行重新渲染
-    //     window.addEventListener('resize', this.renderChart);
-    // },
-    // handleBus(msg) {
-    //     setTimeout(() => {
-    //         this.renderChart();
-    //     }, 200);
-    // },
-    // renderChart() {
-    //     this.$refs.bar.renderChart();
-    //     this.$refs.line.renderChart();
-    // }
   }
 }
 </script>
@@ -322,5 +304,10 @@ export default {
 .schart {
   width: 100%;
   height: 300px;
+}
+
+.editIcon {
+  font-size: 16px;
+  margin: 10px;
 }
 </style>
